@@ -1,0 +1,79 @@
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.github.lindenhoney'
+version = '0.0.1'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+springBoot {
+    buildInfo()
+}
+
+bootJar {
+    launchScript()
+}
+
+test {
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter'
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "short"
+    }
+
+    failFast = true
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+/**
+ *  Spring dependencies
+ */
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+/**
+ *  Other dependencies
+ */
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+    implementation "org.apache.commons:commons-lang3:${apacheCommonsVersion}"
+
+    implementation "org.jsoup:jsoup:${jsoupVersion}"
+    implementation 'io.projectreactor.addons:reactor-extra'
+
+
+/**
+ *  Test dependencies
+ */
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test', {
+        exclude group: 'junit', module: 'junit'
+    }
+
+    testImplementation 'io.projectreactor:reactor-test'
+}
