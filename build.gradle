@@ -31,10 +31,7 @@ bootJar {
 }
 
 test {
-    useJUnitPlatform {
-        includeEngines 'junit-jupiter'
-    }
-
+    useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
         exceptionFormat "short"
