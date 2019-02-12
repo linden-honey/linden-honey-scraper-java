@@ -3,7 +3,6 @@ package com.github.lindenhoney.scraper.web;
 import com.github.lindenhoney.scraper.domain.Song;
 import com.github.lindenhoney.scraper.service.Scraper;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,13 +35,9 @@ public class ScraperController {
     )
     public Flux<Song> fetchSongs(@PathVariable("id") String id) {
         return scrapers.stream()
-                .filter(scraper -> Objects.equals(id, extractId(scraper)))
+                .filter(scraper -> Objects.equals(id, scraper.getId()))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No matching handler"))
                 .fetchSongs();
-    }
-
-    private static String extractId(Scraper scraper) {
-        return StringUtils.substringBeforeLast(scraper.getClass().getSimpleName().toLowerCase(), "scraper");
     }
 }

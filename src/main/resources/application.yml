@@ -1,8 +1,6 @@
 linden-honey:
   scrapers:
-    enabled: true
     grob:
-      enabled: true
       base-url: http://www.gr-oborona.ru/
       retry:
         maxRetries: 5

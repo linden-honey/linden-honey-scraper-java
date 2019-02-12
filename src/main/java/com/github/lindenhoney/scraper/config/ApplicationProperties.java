@@ -6,8 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -16,36 +18,24 @@ import java.time.Duration;
 public class ApplicationProperties {
 
     @Valid
-    private final Scrapers scrapers = new Scrapers();
+    private final Map<String, ScraperProperties> scrapers = new HashMap<>();
 
     @Getter
     @Setter
-    public static class Scrapers {
+    public static class ScraperProperties {
 
-        private boolean enabled;
+        @NotBlank
+        private String baseUrl;
 
         @Valid
-        private final Scraper grob = new Scraper();
+        private final RetryProperties retry = new RetryProperties();
 
         @Getter
         @Setter
-        public static class Scraper {
-
-            private boolean enabled;
-
-            @NotNull
-            private String baseUrl;
-
-            @Valid
-            private final Retry retry = new Retry();
-
-            @Getter
-            @Setter
-            public static class Retry {
-                private int maxRetries;
-                private Duration firstBackoff;
-                private Duration maxBackoff;
-            }
+        public static class RetryProperties {
+            private int maxRetries;
+            private Duration firstBackoff;
+            private Duration maxBackoff;
         }
     }
 }

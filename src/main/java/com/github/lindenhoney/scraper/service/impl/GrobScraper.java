@@ -5,7 +5,6 @@ import com.github.lindenhoney.scraper.domain.Song;
 import com.github.lindenhoney.scraper.domain.SongPreview;
 import com.github.lindenhoney.scraper.util.GrobParser;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,18 +15,13 @@ import java.net.ConnectException;
 import java.nio.charset.Charset;
 
 @Slf4j
-@ConditionalOnProperty(
-        prefix = "linden-honey.scrapers",
-        value = {"enabled", "grob.enabled"},
-        havingValue = "true"
-)
 @Service
 public class GrobScraper extends AbstractScraper {
 
     private static final String SOURCE_CHARSET = "windows-1251";
 
     public GrobScraper(ApplicationProperties properties, Validator validator) {
-        super(properties.getScrapers().getGrob(), validator);
+        super(properties, validator);
     }
 
     @Override
@@ -37,7 +31,7 @@ public class GrobScraper extends AbstractScraper {
                 .flatMapSequential(this::fetchSong);
     }
 
-    private Flux<SongPreview> fetchPreviews() {
+    protected Flux<SongPreview> fetchPreviews() {
         return client.get()
                 .uri("texts")
                 .exchange()
@@ -47,7 +41,7 @@ public class GrobScraper extends AbstractScraper {
                 .filter(this::validate);
     }
 
-    private Mono<Song> fetchSong(Long id) {
+    protected Mono<Song> fetchSong(Long id) {
         log.trace("Fetching the song with id {}", id);
         return client.get()
                 .uri(builder -> builder
