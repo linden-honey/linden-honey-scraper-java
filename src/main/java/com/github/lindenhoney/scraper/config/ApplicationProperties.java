@@ -14,7 +14,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Validated
-@ConfigurationProperties(prefix = "linden-honey")
+@ConfigurationProperties(prefix = "application")
 public class ApplicationProperties {
 
     @Valid

@@ -1,4 +1,4 @@
-linden-honey:
+application:
   scrapers:
     grob:
       base-url: http://www.gr-oborona.ru/
