@@ -26,9 +26,12 @@ public class GrobScraper extends AbstractScraper {
 
     @Override
     public Flux<Song> fetchSongs() {
+        log.debug("Songs fetching started");
         return fetchPreviews()
                 .map(SongPreview::getId)
-                .flatMapSequential(this::fetchSong);
+                .flatMapSequential(this::fetchSong)
+                .doOnError(throwable -> log.error("Unexpected error happened during songs fetching", throwable))
+                .doOnComplete(() -> log.debug("Songs fetching successfully finished"));
     }
 
     protected Flux<SongPreview> fetchPreviews() {
@@ -43,7 +46,8 @@ public class GrobScraper extends AbstractScraper {
 
     protected Mono<Song> fetchSong(Long id) {
         log.trace("Fetching the song with id {}", id);
-        return client.get()
+        return client
+                .get()
                 .uri(builder -> builder
                         .path("text_print.php")
                         .queryParam("area", "go_texts")
@@ -53,11 +57,12 @@ public class GrobScraper extends AbstractScraper {
                 .retryWhen(Retry
                         .anyOf(ConnectException.class)
                         .retryMax(properties.getRetry().getMaxRetries())
-                        .exponentialBackoff(properties.getRetry().getFirstBackoff(), properties.getRetry().getMaxBackoff())
-                        .doOnRetry(context -> log.trace("Performing retry of fetching the song with id {} (attempt {})", id, context.iteration())))
+                        .exponentialBackoffWithJitter(properties.getRetry().getFirstBackoff(), properties.getRetry().getMaxBackoff())
+                        .doOnRetry(context -> log.trace("Performing retry of fetching the song with id {} (attempt {}). Retry is caused by \"{}\"", id, context.iteration(), context.exception().getMessage())))
                 .flatMap(response -> response.bodyToMono(byte[].class))
                 .map(bytes -> new String(bytes, Charset.forName(SOURCE_CHARSET)))
                 .flatMap(html -> Mono.justOrEmpty(GrobParser.parseSong(html)))
-                .filter(this::validate);
+                .filter(this::validate)
+                .doOnSuccess(song -> log.trace("Successfully fetched song with id {} and title \"{}\"", id, song.getTitle()));
     }
 }
