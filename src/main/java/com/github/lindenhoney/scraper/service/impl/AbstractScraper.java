@@ -1,6 +1,7 @@
 package com.github.lindenhoney.scraper.service.impl;
 
 import com.github.lindenhoney.scraper.config.ApplicationProperties;
+import com.github.lindenhoney.scraper.config.ApplicationProperties.ScraperProperties;
 import com.github.lindenhoney.scraper.service.Scraper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -9,22 +10,21 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractScraper implements Scraper {
 
-    protected final ApplicationProperties.Scrapers.Scraper properties;
+    protected final ScraperProperties properties;
     protected final Validator validator;
     protected final WebClient client;
 
-    protected AbstractScraper(ApplicationProperties.Scrapers.Scraper properties, Validator validator) {
-        this.properties = properties;
+    protected AbstractScraper(ApplicationProperties properties, Validator validator) {
+        this.properties = getScraperProperties(this.getId(), properties);
         this.validator = validator;
-        this.client = WebClient.create(properties.getBaseUrl());
+        this.client = WebClient.create(this.properties.getBaseUrl());
     }
 
     protected <T> boolean validate(T bean) {
@@ -37,5 +37,12 @@ public abstract class AbstractScraper implements Scraper {
             log.warn("{} validation failed: {}", bean, messages);
         }
         return isValid;
+    }
+
+    protected static ScraperProperties getScraperProperties(String id, ApplicationProperties properties) {
+        return Optional.of(properties)
+                .map(ApplicationProperties::getScrapers)
+                .map(scrapers -> scrapers.get(id))
+                .orElseThrow(() -> new NoSuchElementException(String.format("Scraper properties with id='%s' not found", id)));
     }
 }

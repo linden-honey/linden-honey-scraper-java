@@ -1,6 +1,5 @@
 package com.github.lindenhoney.scraper.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -19,9 +18,6 @@ import java.util.List;
 @EqualsAndHashCode(exclude = {"verses"})
 @ToString(exclude = {"verses"})
 public class Song {
-
-    @JsonIgnore
-    private Long id;
 
     @NotBlank
     private String title;
