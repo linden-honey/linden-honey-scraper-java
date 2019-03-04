@@ -32,12 +32,12 @@ Run application:
 ./gradlew bootRun
 ```
 
-Run tests (required clean pre-configured database):
+Run tests:
 ```
 ./gradlew test
 ```
 
-Build application artifact (with tests - required clean pre-configured database):
+Build application artifact:
 ```
 ./gradlew build
 ```
