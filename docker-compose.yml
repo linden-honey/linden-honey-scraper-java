@@ -1,7 +1,7 @@
 version: "3.7"
 services:
-  scrapper-spring:
-    container_name: scrapper-spring
+  scrapper:
+    container_name: scrapper
     image: lindenhoney/linden-honey-scraper:latest
     build: .
     ports:
