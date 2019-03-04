@@ -16,8 +16,6 @@
 [license-image]: https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square
 [license-url]: https://github.com/linden-honey/linden-honey-scraper-spring/blob/master/LICENSE
 
-REST API for the lyrics of __Yegor Letov__ and his post-punk/psychedelic rock band __Grazhdanskaya Oborona (Civil Defense)__
-
 ## Technologies
 
 * [Java](https://www.oracle.com/technetwork/java/javase/overview/index.html)
