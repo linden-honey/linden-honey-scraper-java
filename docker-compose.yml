@@ -1,7 +1,7 @@
 version: "3.7"
 services:
-  scrapper:
-    container_name: scrapper
+  scraper:
+    container_name: linden-honey-scraper
     image: lindenhoney/linden-honey-scraper:latest
     build: .
     ports:
