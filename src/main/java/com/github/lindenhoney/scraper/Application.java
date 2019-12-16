@@ -1,6 +1,6 @@
 package com.github.lindenhoney.scraper;
 
-import com.github.lindenhoney.scraper.config.ApplicationProperties;
+import com.github.lindenhoney.scraper.configuration.ApplicationProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

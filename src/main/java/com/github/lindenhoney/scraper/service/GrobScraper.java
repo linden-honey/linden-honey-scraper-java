@@ -1,6 +1,6 @@
-package com.github.lindenhoney.scraper.service.impl;
+package com.github.lindenhoney.scraper.service;
 
-import com.github.lindenhoney.scraper.config.ApplicationProperties;
+import com.github.lindenhoney.scraper.configuration.ApplicationProperties;
 import com.github.lindenhoney.scraper.domain.Song;
 import com.github.lindenhoney.scraper.domain.SongPreview;
 import com.github.lindenhoney.scraper.util.GrobParser;
