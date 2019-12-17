@@ -11,6 +11,8 @@ jobs:
       matrix:
         java:
           - 11.0.3
+          - 12
+          - 13
 
     steps:
       - uses: actions/checkout@v2
