@@ -1,8 +1,8 @@
 package com.github.lindenhoney.scraper.util;
 
+import com.github.lindenhoney.scraper.domain.Preview;
 import com.github.lindenhoney.scraper.domain.Quote;
 import com.github.lindenhoney.scraper.domain.Song;
-import com.github.lindenhoney.scraper.domain.SongPreview;
 import com.github.lindenhoney.scraper.domain.Verse;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @UtilityClass
-public class GrobParser {
+public class Parser {
 
     protected static Optional<Quote> parseQuote(String html) {
         return Optional.ofNullable(html)
@@ -33,7 +33,7 @@ public class GrobParser {
         return Optional.ofNullable(html)
                 .filter(StringUtils::isNotBlank)
                 .map(it -> Arrays.stream(html.split("<br>"))
-                        .map(GrobParser::parseQuote)
+                        .map(Parser::parseQuote)
                         .flatMap(Optional::stream)
                         .collect(Collectors.toList()))
                 .map(Verse::new);
@@ -44,7 +44,7 @@ public class GrobParser {
                 .filter(StringUtils::isNotBlank)
                 .stream()
                 .flatMap(it -> Arrays.stream(it.split("(?:<br>\\s*){2,}"))
-                        .map(GrobParser::parseVerse)
+                        .map(Parser::parseVerse)
                         .flatMap(Optional::stream));
     }
 
@@ -71,7 +71,7 @@ public class GrobParser {
                 });
     }
 
-    public static Stream<SongPreview> parsePreviews(String html) {
+    public static Stream<Preview> parsePreviews(String html) {
         return Optional.ofNullable(html)
                 .filter(StringUtils::isNotBlank)
                 .map(Jsoup::parse)
@@ -87,7 +87,7 @@ public class GrobParser {
                                     .filter(it -> !it.equals(0L))
                                     .orElse(null);
                             final String title = link.text();
-                            return new SongPreview(id, title);
+                            return new Preview(id, title);
                         }));
     }
 }

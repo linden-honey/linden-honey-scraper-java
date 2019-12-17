@@ -1,18 +1,15 @@
 application:
-  scrapers:
-    grob:
-      base-url: http://www.gr-oborona.ru/
-      retry:
-        maxRetries: 5
-        firstBackoff: 1s
-        maxBackoff: 6s
+  rest:
+    base-path: /api
+  scraper:
+    base-url: http://www.gr-oborona.ru/
+    retry:
+      maxRetries: 5
+      firstBackoff: 1s
+      maxBackoff: 6s
 
 server:
   port: 8080
-
-spring:
-  profiles:
-    active: dev
 
 management:
   endpoints:
@@ -22,9 +19,16 @@ management:
           - info
           - health
           - metrics
+          - prometheus
 
 logging:
   level:
     com:
       github:
         lindenhoney: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /
+  api-docs:
+    path: /api-docs

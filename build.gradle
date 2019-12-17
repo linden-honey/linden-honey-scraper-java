@@ -14,7 +14,6 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.github.lindenhoney'
-version = '0.0.1'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -25,17 +24,12 @@ springBoot {
     buildInfo()
 }
 
-bootJar {
-    launchScript()
-}
-
 test {
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
         exceptionFormat "short"
     }
-
     failFast = true
 }
 
@@ -53,9 +47,13 @@ dependencies {
 /**
  *  Other dependencies
  */
-    annotationProcessor 'org.projectlombok:lombok'
+    implementation "org.springdoc:springdoc-openapi-webflux-ui:${springDocVersion}"
+
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
     compileOnly 'org.projectlombok:lombok'
-    implementation "org.apache.commons:commons-lang3:${apacheCommonsVersion}"
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation "org.apache.commons:commons-lang3:${apacheCommonsLangVersion}"
 
     implementation "org.jsoup:jsoup:${jsoupVersion}"
     implementation 'io.projectreactor.addons:reactor-extra'
@@ -64,8 +62,7 @@ dependencies {
 /**
  *  Test dependencies
  */
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+    testImplementation("org.junit.jupiter:junit-jupiter:${junitJupiterVersion}")
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test', {
         exclude group: 'junit', module: 'junit'
