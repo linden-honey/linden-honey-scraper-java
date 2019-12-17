@@ -27,22 +27,26 @@
 ### Local
 
 Build application artifacts:
-```
+
+```bash
 ./gradlew build
 ```
 
 Build application artifacts (without tests):
-```
+
+```bash
 ./gradlew build -x test
 ```
 
 Run tests:
-```
+
+```bash
 ./gradlew test
 ```
 
 Run application:
-```
+
+```bash
 ./gradlew bootRun
 ```
 
@@ -51,17 +55,20 @@ Run application:
 Require already built application artifacts
 
 Bootstrap full project using docker-compose:
-```
+
+```bash
 docker-compose up
 ```
 
 Bootstrap project excluding some services using docker-compose:
-```
+
+```bash
 docker-compose up  --scale [SERVICE=0...]
 ```
 
 Stop and remove containers, networks, images:
-```
+
+```bash
 docker-compose down
 ```
 
