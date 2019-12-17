@@ -7,7 +7,7 @@
 [![release][release-image]][release-url]
 [![license][license-image]][license-url]
 
-[java-image]: https://img.shields.io/badge/java-%3E%3D11-brightgreen.svg?style=flat-square
+[java-image]: https://img.shields.io/badge/java->=11-brightgreen.svg?style=flat-square
 [java-url]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 [release-image]: https://img.shields.io/github/release/linden-honey/linden-honey-scraper-spring.svg?style=flat-square
 [release-url]: https://github.com/linden-honey/linden-honey-scraper-spring/releases
