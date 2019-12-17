@@ -1,4 +1,6 @@
 application:
+  rest:
+    base-path: /api
   scraper:
     base-url: http://www.gr-oborona.ru/
     retry:
@@ -24,3 +26,9 @@ logging:
     com:
       github:
         lindenhoney: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /
+  api-docs:
+    path: /api-docs

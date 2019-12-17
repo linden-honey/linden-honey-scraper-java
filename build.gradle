@@ -47,7 +47,10 @@ dependencies {
 /**
  *  Other dependencies
  */
+    implementation "org.springdoc:springdoc-openapi-webflux-ui:${springDocVersion}"
+
     implementation 'io.micrometer:micrometer-registry-prometheus'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     implementation "org.apache.commons:commons-lang3:${apacheCommonsLangVersion}"
