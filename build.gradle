@@ -25,10 +25,6 @@ springBoot {
     buildInfo()
 }
 
-bootJar {
-    launchScript()
-}
-
 test {
     useJUnitPlatform()
     testLogging {

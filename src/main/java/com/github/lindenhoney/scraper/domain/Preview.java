@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class SongPreview {
+public class Preview {
 
     @NotNull
     private Long id;

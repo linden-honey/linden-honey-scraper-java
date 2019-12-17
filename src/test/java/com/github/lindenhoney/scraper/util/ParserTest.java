@@ -1,7 +1,7 @@
 package com.github.lindenhoney.scraper.util;
 
 import com.github.lindenhoney.scraper.domain.Quote;
-import com.github.lindenhoney.scraper.domain.SongPreview;
+import com.github.lindenhoney.scraper.domain.Preview;
 import com.github.lindenhoney.scraper.domain.Verse;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -14,15 +14,15 @@ import java.util.Collections;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 
-class GrobParserTest {
+class ParserTest {
 
     @Test
     @Tag("quote")
     @DisplayName("Should return empty optional of quote")
     void parseEmptyQuoteTest() {
-        assertThat(GrobParser.parseQuote(null)).isNotPresent();
-        assertThat(GrobParser.parseQuote("")).isNotPresent();
-        assertThat(GrobParser.parseQuote(" ")).isNotPresent();
+        assertThat(Parser.parseQuote(null)).isNotPresent();
+        assertThat(Parser.parseQuote("")).isNotPresent();
+        assertThat(Parser.parseQuote(" ")).isNotPresent();
     }
 
     @Test
@@ -30,7 +30,7 @@ class GrobParserTest {
     @DisplayName("Should return quote object with a phrase string")
     void parseQuoteTest() {
         final String html = "Some phrase";
-        assertThat(GrobParser.parseQuote(html))
+        assertThat(Parser.parseQuote(html))
                 .isPresent()
                 .get()
                 .extracting(Quote::getPhrase)
@@ -42,7 +42,7 @@ class GrobParserTest {
     @DisplayName("Should replace all trailing spaces in a phrase")
     void parseQuoteWithTrailingSpacesTest() {
         final String html = "    Some text    with    trailing spaces  ";
-        assertThat(GrobParser.parseQuote(html))
+        assertThat(Parser.parseQuote(html))
                 .isPresent()
                 .get()
                 .extracting(Quote::getPhrase)
@@ -54,7 +54,7 @@ class GrobParserTest {
     @DisplayName("Should convert all html formatting tags to regular text")
     void parseQuoteWithHtmlFormattingTagsTest() {
         final String html = "<strong>Some</strong> text<br> with html<br> <i>formatting</i> <b>tags</b>";
-        assertThat(GrobParser.parseQuote(html))
+        assertThat(Parser.parseQuote(html))
                 .isPresent()
                 .get()
                 .extracting(Quote::getPhrase)
@@ -65,9 +65,9 @@ class GrobParserTest {
     @Tag("verse")
     @DisplayName("Should return empty optional of verse")
     void parseEmptyVerseTest() {
-        assertThat(GrobParser.parseVerse(null)).isNotPresent();
-        assertThat(GrobParser.parseVerse("")).isNotPresent();
-        assertThat(GrobParser.parseVerse(" ")).isNotPresent();
+        assertThat(Parser.parseVerse(null)).isNotPresent();
+        assertThat(Parser.parseVerse("")).isNotPresent();
+        assertThat(Parser.parseVerse(" ")).isNotPresent();
     }
 
     @Test
@@ -75,7 +75,7 @@ class GrobParserTest {
     @DisplayName("Should return verse object with a quotes array")
     void parseVerseTest() {
         final String html = "Some phrase";
-        assertThat(GrobParser.parseVerse(html))
+        assertThat(Parser.parseVerse(html))
                 .isPresent()
                 .map(Verse::getQuotes)
                 .get()
@@ -94,7 +94,7 @@ class GrobParserTest {
                 + "Some phrase 2"
                 + "<br>"
                 + "Some phrase 3";
-        assertThat(GrobParser.parseVerse(html))
+        assertThat(Parser.parseVerse(html))
                 .isPresent()
                 .map(Verse::getQuotes)
                 .get()
@@ -111,9 +111,9 @@ class GrobParserTest {
     @Tag("lyrics")
     @DisplayName("Should return empty stream of verses")
     void parseEmptyLyricsTest() {
-        assertThat(GrobParser.parseLyrics(null)).isEmpty();
-        assertThat(GrobParser.parseLyrics("")).isEmpty();
-        assertThat(GrobParser.parseLyrics(" ")).isEmpty();
+        assertThat(Parser.parseLyrics(null)).isEmpty();
+        assertThat(Parser.parseLyrics("")).isEmpty();
+        assertThat(Parser.parseLyrics(" ")).isEmpty();
     }
 
     @Test
@@ -128,7 +128,7 @@ class GrobParserTest {
                 + "Some phrase 3"
                 + "<br> <br>"
                 + "Some phrase 4";
-        assertThat(GrobParser.parseLyrics(html))
+        assertThat(Parser.parseLyrics(html))
                 .isNotEmpty()
                 .flatExtracting("quotes")
                 .extracting("phrase")
@@ -145,9 +145,9 @@ class GrobParserTest {
     @Tag("song")
     @DisplayName("Should return empty optional of song")
     void parseEmptySongTest() {
-        assertThat(GrobParser.parseSong(null)).isNotPresent();
-        assertThat(GrobParser.parseSong("")).isNotPresent();
-        assertThat(GrobParser.parseSong(" ")).isNotPresent();
+        assertThat(Parser.parseSong(null)).isNotPresent();
+        assertThat(Parser.parseSong("")).isNotPresent();
+        assertThat(Parser.parseSong(" ")).isNotPresent();
     }
 
     @Test
@@ -159,7 +159,7 @@ class GrobParserTest {
                 + "<p><strong>Автор:</strong> Е.Летов</p>"
                 + "<p><strong>Альбом:</strong> Всё идёт по плану</p>"
                 + "<p>Some phrase 1<br>Some phrase 2</p>";
-        assertThat(GrobParser.parseSong(html))
+        assertThat(Parser.parseSong(html))
                 .isPresent()
                 .get()
                 .hasFieldOrPropertyWithValue("title", "Всё идёт по плану")
@@ -181,7 +181,7 @@ class GrobParserTest {
                 + "<p><strong>Автор:</strong> Е.Летов</p>"
                 + "<p><strong>Альбом:</strong> Всё идёт по плану</p>"
                 + "<p></p>";
-        assertThat(GrobParser.parseSong(html))
+        assertThat(Parser.parseSong(html))
                 .isPresent()
                 .get()
                 .hasFieldOrPropertyWithValue("title", null)
@@ -198,7 +198,7 @@ class GrobParserTest {
                 + "<h2>Всё идёт по плану</h2>"
                 + "<p><strong>Альбом:</strong> Всё идёт по плану</p>"
                 + "<p></p>";
-        assertThat(GrobParser.parseSong(html))
+        assertThat(Parser.parseSong(html))
                 .isPresent()
                 .get()
                 .hasFieldOrPropertyWithValue("title", "Всё идёт по плану")
@@ -215,7 +215,7 @@ class GrobParserTest {
                 + "<h2>Всё идёт по плану</h2>"
                 + "<p><strong>Автор:</strong> Е.Летов</p>"
                 + "<p></p>";
-        assertThat(GrobParser.parseSong(html))
+        assertThat(Parser.parseSong(html))
                 .isPresent()
                 .get()
                 .hasFieldOrPropertyWithValue("title", "Всё идёт по плану")
@@ -234,9 +234,9 @@ class GrobParserTest {
                 + "<li><a href=\"\">Unknown</a></li>"
                 + "<li><a href=\"/texts/1056901056.html\">Всё как у людей</a></li>"
                 + "</ul>";
-        assertThat(GrobParser.parsePreviews(html))
+        assertThat(Parser.parsePreviews(html))
                 .isNotEmpty()
-                .extracting(SongPreview::getId, SongPreview::getTitle)
+                .extracting(Preview::getId, Preview::getTitle)
                 .containsExactly(
                         tuple(1056899068L, "Всё идёт по плану"),
                         tuple(null, "Unknown"),
@@ -248,7 +248,7 @@ class GrobParserTest {
     @Tag("preview")
     @DisplayName("Should return empty array")
     void parseEmptyPreviews() {
-        assertThat(GrobParser.parsePreviews(StringUtils.EMPTY))
+        assertThat(Parser.parsePreviews(StringUtils.EMPTY))
                 .isEmpty();
     }
 }

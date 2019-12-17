@@ -1,6 +1,5 @@
 package com.github.lindenhoney.scraper.service;
 
-import com.github.lindenhoney.scraper.configuration.ApplicationProperties;
 import com.github.lindenhoney.scraper.configuration.ScraperProperties;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,8 +20,8 @@ public abstract class AbstractScraper implements Scraper {
     protected final Validator validator;
     protected final WebClient client;
 
-    protected AbstractScraper(ApplicationProperties properties, Validator validator) {
-        this.properties = getScraperProperties(this.getId(), properties);
+    protected AbstractScraper(ScraperProperties properties, Validator validator) {
+        this.properties = properties;
         this.validator = validator;
         this.client = WebClient.create(this.properties.getBaseUrl());
     }
@@ -38,12 +36,5 @@ public abstract class AbstractScraper implements Scraper {
             log.warn("{} validation failed: {}", bean, messages);
         }
         return isValid;
-    }
-
-    protected static ScraperProperties getScraperProperties(String id, ApplicationProperties properties) {
-        return Optional.ofNullable(properties)
-                .map(ApplicationProperties::getScrapers)
-                .map(scrapers -> scrapers.get(id))
-                .orElseThrow(() -> new IllegalStateException(String.format("Scraper properties with id='%s' not found", id)));
     }
 }
