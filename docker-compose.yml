@@ -1,14 +1,14 @@
 version: "3.7"
 services:
   scraper:
-    container_name: linden-honey-scraper
-    image: lindenhoney/linden-honey-scraper:latest
+    container_name: scraper
+    image: lindenhoney/linden-honey-scraper-spring:latest
     build: .
     ports:
       - 80:8080
     networks:
-      - linden-honey-net
+      - internal
 
 networks:
-  linden-honey-net:
+  internal:
     driver: bridge
