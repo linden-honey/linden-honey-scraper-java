@@ -17,6 +17,7 @@ management:
           - info
           - health
           - metrics
+          - prometheus
 
 logging:
   level:
