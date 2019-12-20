@@ -1,18 +1,12 @@
 package com.github.lindenhoney.scraper.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+import lombok.Value;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Accessors(chain = true)
+@Value
 public class Quote {
 
     @NotBlank
-    private String phrase;
+    private final String phrase;
 }

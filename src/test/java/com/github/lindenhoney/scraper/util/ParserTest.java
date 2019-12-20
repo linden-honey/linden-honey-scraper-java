@@ -1,7 +1,7 @@
 package com.github.lindenhoney.scraper.util;
 
-import com.github.lindenhoney.scraper.domain.Quote;
 import com.github.lindenhoney.scraper.domain.Preview;
+import com.github.lindenhoney.scraper.domain.Quote;
 import com.github.lindenhoney.scraper.domain.Verse;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.tuple;
 
 class ParserTest {
 
@@ -231,16 +230,15 @@ class ParserTest {
         final String html = ""
                 + "<ul id=\"abc_list\">"
                 + "<li><a href=\"/texts/1056899068.html\">Всё идёт по плану</a></li>"
-                + "<li><a href=\"\">Unknown</a></li>"
+                + "<li><a href=\"\">Some title</a></li>"
                 + "<li><a href=\"/texts/1056901056.html\">Всё как у людей</a></li>"
                 + "</ul>";
         assertThat(Parser.parsePreviews(html))
                 .isNotEmpty()
-                .extracting(Preview::getId, Preview::getTitle)
                 .containsExactly(
-                        tuple(1056899068L, "Всё идёт по плану"),
-                        tuple(null, "Unknown"),
-                        tuple(1056901056L, "Всё как у людей")
+                        new Preview("1056899068", "Всё идёт по плану"),
+                        new Preview(null, "Some title"),
+                        new Preview("1056901056", "Всё как у людей")
                 );
     }
 
