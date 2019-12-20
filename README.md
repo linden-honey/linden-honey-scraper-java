@@ -11,7 +11,7 @@
 [java-url]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 [release-image]: https://img.shields.io/github/release/linden-honey/linden-honey-scraper-spring.svg?style=flat-square
 [release-url]: https://github.com/linden-honey/linden-honey-scraper-spring/releases
-[ci-image]: https://img.shields.io/github/workflow/status/linden-honey/linden-honey-scraper-spring/CI
+[ci-image]: https://img.shields.io/github/workflow/status/linden-honey/linden-honey-scraper-spring/CI?style=flat-square
 [ci-url]: https://github.com/linden-honey/linden-honey-scraper-spring/actions
 [license-image]: https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square
 [license-url]: https://github.com/linden-honey/linden-honey-scraper-spring/blob/master/LICENSE
