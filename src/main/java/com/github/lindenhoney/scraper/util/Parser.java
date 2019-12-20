@@ -6,7 +6,6 @@ import com.github.lindenhoney.scraper.domain.Song;
 import com.github.lindenhoney.scraper.domain.Verse;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
@@ -79,12 +78,11 @@ public class Parser {
                 .flatMap(document -> document.select("#abc_list a")
                         .stream()
                         .map(link -> {
-                            final Long id = Optional.ofNullable(link.attr("href"))
+                            final String id = Optional.ofNullable(link.attr("href"))
                                     .filter(StringUtils::isNotBlank)
                                     .map(path -> StringUtils.substringAfterLast(path, "/"))
                                     .map(path -> StringUtils.substringBeforeLast(path, "."))
-                                    .map(NumberUtils::toLong)
-                                    .filter(it -> !it.equals(0L))
+                                    .filter(StringUtils::isNotBlank)
                                     .orElse(null);
                             final String title = link.text();
                             return new Preview(id, title);

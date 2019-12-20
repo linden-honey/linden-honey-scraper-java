@@ -34,7 +34,8 @@ public class DefaultScraper extends AbstractScraper {
                 .doOnComplete(() -> log.debug("Songs fetching successfully finished"));
     }
 
-    protected Flux<Preview> fetchPreviews() {
+    @Override
+    public Flux<Preview> fetchPreviews() {
         return client.get()
                 .uri("texts")
                 .exchange()
@@ -44,7 +45,8 @@ public class DefaultScraper extends AbstractScraper {
                 .filter(this::validate);
     }
 
-    protected Mono<Song> fetchSong(Long id) {
+    @Override
+    public Mono<Song> fetchSong(String id) {
         log.trace("Fetching the song with id {}", id);
         return client
                 .get()

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class Preview {
 
     @NotNull
-    private Long id;
+    private String id;
 
     @NotBlank
     private String title;
