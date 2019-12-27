@@ -14,6 +14,8 @@ import javax.validation.Validator;
 import java.net.ConnectException;
 import java.nio.charset.Charset;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @Slf4j
 @Service
 public class DefaultScraper extends AbstractScraper {
@@ -70,6 +72,10 @@ public class DefaultScraper extends AbstractScraper {
                 .map(bytes -> new String(bytes, SOURCE_CHARSET))
                 .flatMap(html -> Mono.justOrEmpty(Parser.parseSong(html)))
                 .filter(this::validate)
-                .doOnSuccess(song -> log.debug("Successfully fetched song with id {} and title \"{}\"", id, song.getTitle()));
+                .doOnSuccess(song -> log.debug(
+                        "Successfully fetched song with id {} and title \"{}\"",
+                        id,
+                        new String(song.getTitle().getBytes(UTF_8), Charset.defaultCharset())
+                ));
     }
 }
