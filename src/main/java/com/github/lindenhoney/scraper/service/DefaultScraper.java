@@ -18,7 +18,7 @@ import java.nio.charset.Charset;
 @Service
 public class DefaultScraper extends AbstractScraper {
 
-    private static final String SOURCE_CHARSET = "windows-1251";
+    private static final Charset SOURCE_CHARSET = Charset.forName("cp1251");
 
     public DefaultScraper(ScraperProperties properties, Validator validator) {
         super(properties, validator);
@@ -36,18 +36,20 @@ public class DefaultScraper extends AbstractScraper {
 
     @Override
     public Flux<Preview> fetchPreviews() {
+        log.debug("Previews fetching started");
         return client.get()
                 .uri("texts")
                 .exchange()
                 .flatMap(response -> response.bodyToMono(byte[].class))
-                .map(bytes -> new String(bytes, Charset.forName(SOURCE_CHARSET)))
+                .map(bytes -> new String(bytes, SOURCE_CHARSET))
                 .flatMapMany(html -> Flux.fromStream(Parser.parsePreviews(html)))
-                .filter(this::validate);
+                .filter(this::validate)
+                .doOnComplete(() -> log.debug("Previews fetching successfully finished"));
     }
 
     @Override
     public Mono<Song> fetchSong(String id) {
-        log.trace("Fetching the song with id {}", id);
+        log.debug("Fetching song with id {}", id);
         return client
                 .get()
                 .uri(builder -> builder
@@ -60,11 +62,14 @@ public class DefaultScraper extends AbstractScraper {
                         .anyOf(ConnectException.class)
                         .retryMax(properties.getRetry().getMaxRetries())
                         .exponentialBackoffWithJitter(properties.getRetry().getFirstBackoff(), properties.getRetry().getMaxBackoff())
-                        .doOnRetry(context -> log.trace("Performing retry of fetching the song with id {} (attempt {}). Retry is caused by \"{}\"", id, context.iteration(), context.exception().getMessage())))
+                        .doOnRetry(context -> {
+                            log.debug("Fetching attempt({}) for song with id {} is failed.", context.iteration() - 1, id);
+                            log.debug("Retry is caused by: \"{}\"", context.exception().getMessage());
+                        }))
                 .flatMap(response -> response.bodyToMono(byte[].class))
-                .map(bytes -> new String(bytes, Charset.forName(SOURCE_CHARSET)))
+                .map(bytes -> new String(bytes, SOURCE_CHARSET))
                 .flatMap(html -> Mono.justOrEmpty(Parser.parseSong(html)))
                 .filter(this::validate)
-                .doOnSuccess(song -> log.trace("Successfully fetched song with id {} and title \"{}\"", id, song.getTitle()));
+                .doOnSuccess(song -> log.debug("Successfully fetched song with id {} and title \"{}\"", id, song.getTitle()));
     }
 }
