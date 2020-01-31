@@ -53,6 +53,7 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
     implementation "org.apache.commons:commons-lang3:${apacheCommonsLangVersion}"
 
     implementation "org.jsoup:jsoup:${jsoupVersion}"
@@ -63,6 +64,9 @@ dependencies {
  *  Test dependencies
  */
     testImplementation("org.junit.jupiter:junit-jupiter:${junitJupiterVersion}")
+
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test', {
         exclude group: 'junit', module: 'junit'
