@@ -1,11 +1,13 @@
 package com.github.lindenhoney.scraper.domain;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 @Value
@@ -15,5 +17,6 @@ public class Verse {
 
     @Valid
     @NotEmpty
-    private final List<Quote> quotes;
+    @Builder.Default
+    private final List<Quote> quotes = new ArrayList<>();
 }
