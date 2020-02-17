@@ -26,7 +26,9 @@ public class Parser {
                 .map(Element::text)
                 .map(text -> text.replaceAll("\\s+", StringUtils.SPACE))
                 .map(StringUtils::trimToNull)
-                .map(Quote::new);
+                .map(phrase -> Quote.builder()
+                        .phrase(phrase)
+                        .build());
     }
 
     protected static Optional<Verse> parseVerse(String html) {
@@ -36,7 +38,9 @@ public class Parser {
                         .map(Parser::parseQuote)
                         .flatMap(Optional::stream)
                         .collect(Collectors.toList()))
-                .map(Verse::new);
+                .map(quotes -> Verse.builder()
+                        .quotes(quotes)
+                        .build());
     }
 
     protected static Stream<Verse> parseLyrics(String html) {
@@ -67,7 +71,12 @@ public class Parser {
                             .orElse(null);
                     final String lyricsHtml = document.selectFirst("p:last-of-type").html();
                     final List<Verse> verses = parseLyrics(lyricsHtml).collect(Collectors.toList());
-                    return new Song(title, author, album, verses);
+                    return Song.builder()
+                            .title(title)
+                            .author(author)
+                            .album(album)
+                            .verses(verses)
+                            .build();
                 });
     }
 
@@ -86,7 +95,10 @@ public class Parser {
                                     .filter(StringUtils::isNotBlank)
                                     .orElse(null);
                             final String title = link.text();
-                            return new Preview(id, title);
+                            return Preview.builder()
+                                    .id(id)
+                                    .title(title)
+                                    .build();
                         })
                         .filter(preview -> Objects.nonNull(preview.getId()))
                 );

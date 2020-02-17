@@ -1,15 +1,16 @@
 package com.github.lindenhoney.scraper.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
+import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 @Value
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(exclude = {"verses"})
 @ToString(exclude = {"verses"})
 public class Song {
@@ -23,5 +24,6 @@ public class Song {
 
     @Valid
     @NotEmpty
-    private final List<Verse> verses;
+    @Builder.Default
+    private final List<Verse> verses = new ArrayList<>();
 }
