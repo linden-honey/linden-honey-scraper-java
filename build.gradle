@@ -27,8 +27,17 @@ springBoot {
 test {
     useJUnitPlatform()
     testLogging {
-        events "passed", "skipped", "failed"
+        events "failed"
         exceptionFormat "short"
+
+        debug {
+            events "started", "skipped", "failed"
+            exceptionFormat "full"
+        }
+
+        info {
+            events "failed", "skipped"
+        }
     }
     failFast = true
 }
