@@ -5,7 +5,7 @@ import lombok.ToString;
 import lombok.Value;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Value
@@ -14,6 +14,6 @@ import java.util.List;
 public class Verse {
 
     @Valid
-    @NotNull
+    @NotEmpty
     private final List<Quote> quotes;
 }

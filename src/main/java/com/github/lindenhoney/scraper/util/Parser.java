@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -86,6 +87,8 @@ public class Parser {
                                     .orElse(null);
                             final String title = link.text();
                             return new Preview(id, title);
-                        }));
+                        })
+                        .filter(preview -> Objects.nonNull(preview.getId()))
+                );
     }
 }

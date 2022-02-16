@@ -231,13 +231,13 @@ class ParserTest {
                 + "<ul id=\"abc_list\">"
                 + "<li><a href=\"/texts/1056899068.html\">Всё идёт по плану</a></li>"
                 + "<li><a href=\"\">Some title</a></li>"
+                + "<li><a href=\"\"></a></li>"
                 + "<li><a href=\"/texts/1056901056.html\">Всё как у людей</a></li>"
                 + "</ul>";
         assertThat(Parser.parsePreviews(html))
                 .isNotEmpty()
                 .containsExactly(
                         new Preview("1056899068", "Всё идёт по плану"),
-                        new Preview(null, "Some title"),
                         new Preview("1056901056", "Всё как у людей")
                 );
     }

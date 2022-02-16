@@ -6,7 +6,7 @@ import lombok.Value;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Value
@@ -22,6 +22,6 @@ public class Song {
     private final String album;
 
     @Valid
-    @NotNull
+    @NotEmpty
     private final List<Verse> verses;
 }
